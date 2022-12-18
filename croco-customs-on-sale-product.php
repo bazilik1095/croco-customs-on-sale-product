@@ -11,7 +11,6 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path: /languages
  */
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
     die;
@@ -34,6 +33,8 @@ class Croco_Customs_On_Sale_Product{
      */
     public function get_query_has_sale_product( $query = [] ){
 
+        $product_ids_on_sale = wc_get_product_ids_on_sale(); 
+
         if( ! empty($query['meta_query'])){
 
             foreach ($query['meta_query'] as $index => $row) {
@@ -41,17 +42,13 @@ class Croco_Customs_On_Sale_Product{
                 if( false !== strpos($row['key'], '_sale_product' )){
 
                     unset($query['meta_query'][$index]);
-                    
-                    $query['meta_query'][$index] = [
-                        'post__in' => wc_get_product_ids_on_sale(), 
-                    ];
+
+                    $query['post__in'] = $product_ids_on_sale;
 
                 }
             }
-            
+        
         }
-
-        error_log(json_encode($query));
 
         return $query;
     }
