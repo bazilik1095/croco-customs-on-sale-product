@@ -33,8 +33,6 @@ class Croco_Customs_On_Sale_Product{
      */
     public function get_query_has_sale_product( $query = [] ){
 
-        $product_ids_on_sale = wc_get_product_ids_on_sale(); 
-
         if( ! empty($query['meta_query'])){
 
             foreach ($query['meta_query'] as $index => $row) {
@@ -43,11 +41,9 @@ class Croco_Customs_On_Sale_Product{
 
                     unset($query['meta_query'][$index]);
 
-                    $query['post__in'] = $product_ids_on_sale;
-
+                    $query['post__in'] = wc_get_product_ids_on_sale();
                 }
             }
-        
         }
 
         return $query;
